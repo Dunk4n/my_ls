@@ -22,6 +22,7 @@ SRC	=	my_showmem.c			\
 		my_strncat.c			\
 		my_isneg.c			\
 		my_strcat.c			\
+		my_strdupcat.c			\
 		my_strncmp.c			\
 		my_is_prime.c			\
 		my_strcmp.c			\

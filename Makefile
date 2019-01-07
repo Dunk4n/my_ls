@@ -16,13 +16,14 @@ SRC	=	$(D_SRC)main.c		\
 		$(D_SRC)sort.c		\
 		$(D_SRC)cmp.c		\
 		$(D_SRC)display.c	\
+		$(D_SRC)display_file.c	\
 		$(D_SRC)tab_dir.c
 
 OBJ	=	$(SRC:%.c=%.o)
 
 NAME	=	my_ls
 
-CFLAGS	=	-W -Wall -Wextra -I$(D_INC)
+CFLAGS	=	-W -Wall -Wextra -I$(D_INC) -g
 
 LDFLAGS	=	-L$(D_LIB) -lmy
 

@@ -38,39 +38,52 @@ int     nb_folder(int ac, char **av)
     return (nb);
 }
 
+char    **tab_name(int ac, char **av)
+{
+    char    **dirn;
+    int     i = 1;
+    int     nb = 0;
+
+    while (i < ac) {
+        if (!if_fg(av[i++]))
+            nb++;
+    }
+    dirn = malloc(sizeof(char*) * (nb + 1));
+    i = 1;
+    nb = 0;
+    while (i < ac) {
+        if (!if_fg(av[i])) {
+            dirn[nb] = malloc(sizeof(char) * (my_strlen(av[i]) + 1));
+            dirn[nb] = my_strcpy(dirn[nb], av[i]);
+            nb++;
+        }
+        i++;
+    }
+    dirn[nb] = NULL;
+    return (dirn);
+}
+
 int     my_ls(int ac, char **av)
 {
-    struct dirent   *dir = tab_dir(ac, av, 1);
+    struct dirent   *dir;
     char            *fg = option(ac, av);
+    int             nbf = nb_folder(ac, av);
+    int             i = 1;
+    int             nb = 0;
+    int             fold = 0;
 
-    if (!nb_folder(ac, av)) {
-        av[0][0] = '.';
-        av[0][1] = '\0';
-        dir = tab_dir(ac, av, 0);
-        sort_dir(dir, fg);
-        display_dir(dir, fg);
-        return (0);
-    }
+    if (nbf == 0)
+        get_all_dir(fg, ".", NULL, 1);
+    dir = tab_file(ac, av, &fold);
     sort_dir(dir, fg);
-    display_dir(dir, fg);
-    /*while (dir && dir[i].d_name[0]) {
-        printf("%s\n", dir[i].d_name);
+    display_file(dir, fg, fold);
+    while (i < ac) {
+        if (!if_fg(av[i])) {
+            get_all_dir(fg, av[i], NULL, nbf);
+            nb++;
+            (nb < fold) ? my_putchar('\n') : 0;
+        }
         i++;
-    }*/
-    return (0);
-/*  while (dir) {
-        while (k < ac) {
-            if (!if_fg(av[k]))
-                printf("%s:\n", av[k]);
-            k++;
-        }
-        while (dir && dir[i].d_name[0]) {
-            printf("%s\n", dir[i].d_name);
-            i++;
-        }
-        j++;
-        dir = tab_dir(ac, av, j);
-    }*/
-    put_color('W', 0, 1);
+    }
     return (0);
 }

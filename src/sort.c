@@ -47,7 +47,7 @@ void    dir_rev(struct dirent **dir)
     int             i = 0;
 
     if (!dir || !(*dir))
-        return (NULL);
+        return ;
     while ((*dir)[nb++].d_name[0]);
     nb -= 2;
     while (i < nb / 2) {

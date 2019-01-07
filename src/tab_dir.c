@@ -50,7 +50,7 @@ struct dirent   *make_malloc(char *str)
     return (tab);
 }
 
-struct dirent   *tab(char *str)
+struct dirent   *tab_dir(char *str)
 {
     DIR             *fddir;
     struct dirent   *dir;
@@ -58,11 +58,11 @@ struct dirent   *tab(char *str)
     struct dirent   *tab;
     int             i = 0;
 
-    if (!(tab = make_malloc(str)))
+    if (!str || !(tab = make_malloc(str)) || !(fddir = opendir(str)) ||
+!(dir = readdir(fddir))) {
+        free(tab);
         return (NULL);
-    if (!(fddir = opendir(str)))
-        return (NULL);
-    dir = readdir(fddir);
+    }
     while (dir) {
         tab[i++] = *dir;
         dir = readdir(fddir);
@@ -73,23 +73,41 @@ struct dirent   *tab(char *str)
     return (tab);
 }
 
-struct dirent   *tab_dir(int ac, char **av, int nb)
+int             nb_file(int ac, char **av, int *fold)
 {
-    int i = 1;
-    int tmp = 0;
+    DIR             *fddir;
+    int             i = 1;
+    int             nb = 0;
 
-    if (nb < 0)
-        return (NULL);
-    if (nb == 0) {
-        i = 0;
-        tmp--;
-    }
     while (i < ac) {
-        if (if_fg(av[i]) == 0)
-            tmp++;
-        if (tmp == nb)
-            return (tab(av[i]));
+        if (!(fddir = opendir(av[i])) || !if_fg(av[i]))
+            nb++;
+        if (fddir) {
+            (*fold)++;
+            closedir(fddir);
+        }
         i++;
     }
-    return (NULL);
+    return (nb);
+}
+
+struct dirent   *tab_file(int ac, char **av, int *fold)
+{
+    DIR             *fddir;
+    struct dirent   *dir;
+    int             i = 1;
+    int             nb = 0;
+
+    if (!(dir = malloc(sizeof(struct dirent) * (nb_file(ac, av, fold) + 1))))
+        return (NULL);
+    while (i < ac) {
+        if (!(fddir = opendir(av[i])) && !if_fg(av[i])) {
+            my_strcpy(dir[nb].d_name, av[i]);
+            nb++;
+        }
+        (fddir) ? closedir(fddir) : 0;
+        i++;
+    }
+    dir[nb].d_name[0] = '\0';
+    return (dir);
 }

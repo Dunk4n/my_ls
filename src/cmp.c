@@ -6,6 +6,7 @@
 */
 
 #include <sys/stat.h>
+#include <stdlib.h>
 #include "my.h"
 #include "ls.h"
 

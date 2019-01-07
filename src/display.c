@@ -29,11 +29,11 @@ void    pars_time(char *str)
     free(tab);
 }
 
-void    flag_l(struct dirent dir, char *fg)
+void    flag_l(char *path)
 {
     struct stat filestat;
 
-    if (stat(dir.d_name, &filestat) < 0)
+    if (!path || stat(path, &filestat) < 0)
         return ;
     my_putstr((S_ISDIR(filestat.st_mode)) ? "d" : "-");
     my_putstr((filestat.st_mode & S_IRUSR) ? "r" : "-");
@@ -51,34 +51,64 @@ filestat.st_size);
     pars_time(ctime(&filestat.st_mtime));
 }
 
-int     total(struct dirent *dir)
+char    *get_path(char *name, char *path)
+{
+    char *repath;
+
+    if (!name)
+        return (NULL);
+    if (!path || !path[0]) {
+        if (!(repath = malloc(sizeof(char) * (my_strlen(name) + 1))))
+            return (NULL);
+        my_strcpy(repath, name);
+        return (repath);
+    }
+    if (name[0] == '/' || path[my_strlen(path) - 1] == '/')
+        return (my_strdupcat(path, name));
+    if (!(repath = malloc(sizeof(char) * (my_strlen(path) + 2))))
+        return (NULL);
+    my_strcpy(repath, path);
+    repath[my_strlen(path)] = '/';
+    repath[my_strlen(path) + 1] = '\0';
+    return (my_strdupcat(repath, name));
+}
+
+int     total(struct dirent *dir, char *path)
 {
     struct stat filestat;
+    char        *newpath;
     int         nb = 0;
     int         i = 0;
 
+    if (!dir)
+        return -1;
     while (dir[i].d_name[0]) {
         if (dir[i].d_name[0] != '.') {
-            stat(dir[i].d_name, &filestat);
+            newpath = get_path(dir[i].d_name, path);
+            stat(newpath, &filestat);
             nb += filestat.st_size;
+            free(newpath);
         }
         i++;
     }
     return ((nb + 4096) / 1000);
 }
 
-void    display_dir(struct dirent *dir, char *fg)
+void    display_dir(struct dirent *dir, char *path, char *fg)
 {
+    char *newpath;
     int i = 0;
 
     if (!dir || !fg)
         return ;
     if (fg[0] == 'l')
-        my_printf("total %d\n", total(dir));
+        my_printf("total %d\n", total(dir, path));
     while (dir[i].d_name[0]) {
         if (dir[i].d_name[0] != '.') {
-            (fg[0] == 'l') ? flag_l(dir[i], fg) : 0;
+            newpath = get_path(dir[i].d_name, path);
+            (fg[0] == 'l') ? flag_l(newpath) : 0;
             my_printf("%s\n", dir[i].d_name);
+            free(newpath);
         }
         i++;
     }
