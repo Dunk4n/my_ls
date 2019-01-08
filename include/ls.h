@@ -11,13 +11,13 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+int             dir_cmpt(struct dirent *d1, struct dirent *d2, char *path);
+int             dir_cmp(struct dirent *d1, struct dirent *d2, char *path);
 void            display_dir(struct dirent *dir, char *path, char *fg);
 void            get_all_dir(char *fg, char *name, char *path, int nb);
 void            display_file(struct dirent *dir, char *fg, int fold);
+void            sort_dir(struct dirent *dir, char *fg, char *path);
 struct dirent   *tab_file(int ac, char **av, int *fold, int *ret);
-int             dir_cmpt(struct dirent *d1, struct dirent *d2);
-int             dir_cmp(struct dirent *d1, struct dirent *d2);
-void            sort_dir(struct dirent *dir, char *fg);
 int             nb_folder_nofile(int ac, char **av);
 char            *get_path(char *name, char *path);
 void            sort_str(char **tab, char *fg);

@@ -49,7 +49,7 @@ void    get_all_dir(char *fg, char *name, char *path, int nb)
 !(dir = tab_dir(newpath)))
         return ;
     (nb > 1 || fg[1] == 'R') ? my_printf("%s:\n", newpath) : 0;
-    sort_dir(dir, fg);
+    sort_dir(dir, fg, newpath);
     display_dir(dir, newpath, fg);
     while (fg[1] == 'R' && dir[i].d_name[0]) {
         if ((dir[i].d_name[0] != '.' || dir[i].d_name[1] == '/') &&

@@ -11,21 +11,21 @@
 #include "my.h"
 #include "ls.h"
 
-void    swap_sort(struct dirent *d1, struct dirent *d2, int *swap,
-int(*dmp)(struct dirent *d1, struct dirent *d2))
+void    swap_sort(struct dirent *d1, int *swap,
+int(*dmp)(struct dirent *d1, struct dirent *d2, char *path), char *path)
 {
     struct dirent tmp;
 
-    if (dmp(d1, d2) > 0) {
+    if (dmp(d1, (d1 + 1), path) > 0) {
         *swap = 1;
         tmp = *d1;
-        *d1 = *d2;
-        *d2 = tmp;
+        *d1 = *(d1 + 1);
+        *(d1 + 1) = tmp;
     }
 }
 
 void    buble_sort(struct dirent *dir, int(*dmp)(struct dirent *d1,
-struct dirent *d2))
+struct dirent *d2, char *path), char *path)
 {
     int i = 0;
     int swap = 1;
@@ -34,7 +34,7 @@ struct dirent *d2))
         i = 1;
         swap = 0;
         while (dir[i].d_name[0]) {
-            swap_sort(&(dir[i - 1]), &(dir[i]), &swap, dmp);
+            swap_sort(&(dir[i - 1]), &swap, dmp, path);
             i++;
         }
     }
@@ -58,13 +58,13 @@ void    dir_rev(struct dirent **dir)
     }
 }
 
-void    sort_dir(struct dirent *dir, char *fg)
+void    sort_dir(struct dirent *dir, char *fg, char *path)
 {
     if (!fg || !dir || !dir[0].d_name[0] || !dir[1].d_name[0])
         return ;
-    buble_sort(dir, &dir_cmp);
-    if (fg[4] != 't')
-        buble_sort(dir, &dir_cmpt);
+    buble_sort(dir, &dir_cmp, path);
+    if (fg[4] == 't')
+        buble_sort(dir, &dir_cmpt, path);
     if (fg[3] == 'r')
         dir_rev(&dir);
 }

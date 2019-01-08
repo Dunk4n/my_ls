@@ -90,7 +90,7 @@ int     my_ls(int ac, char **av)
     if (nbf == 0)
         get_all_dir(fg, ".", NULL, 1);
     dir = tab_file(ac, av, &fold, &ret);
-    sort_dir(dir, fg);
+    sort_dir(dir, fg, "");
     display_file(dir, fg, fold);
     list_dir(ac, av, fold);
     return ((ret != 0) ? 84 : 0);

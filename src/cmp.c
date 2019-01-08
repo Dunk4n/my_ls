@@ -7,20 +7,25 @@
 
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <time.h>
 #include "my.h"
 #include "ls.h"
 
-int     dir_cmpt(struct dirent *d1, struct dirent *d2)
+int     dir_cmpt(struct dirent *d1, struct dirent *d2, char *path)
 {
     struct stat attrib1;
     struct stat attrib2;
+    char   *newpath1 = get_path(d1->d_name, path);
+    char   *newpath2 = get_path(d2->d_name, path);
 
-    stat(d1->d_name, &attrib1);
-    stat(d2->d_name, &attrib2);
+    stat(newpath1, &attrib1);
+    stat(newpath2, &attrib2);
     if (attrib1.st_ctime - attrib2.st_ctime < 0)
         return (1);
     if (attrib1.st_ctime - attrib2.st_ctime == 0)
         return (0);
+    free(newpath1);
+    free(newpath2);
     return (-1);
 }
 
@@ -48,7 +53,8 @@ int     my_strcmp_c(char const *s1, char const *s2)
     return (0);
 }
 
-int     dir_cmp(struct dirent *d1, struct dirent *d2)
+int     dir_cmp(struct dirent *d1, struct dirent *d2, char *path)
 {
+    (void)path;
     return (my_strcmp_c(d1->d_name, d2->d_name));
 }
