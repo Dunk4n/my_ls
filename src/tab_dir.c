@@ -91,17 +91,21 @@ int             nb_file(int ac, char **av, int *fold)
     return (nb);
 }
 
-struct dirent   *tab_file(int ac, char **av, int *fold)
+struct dirent   *tab_file(int ac, char **av, int *fold, int *ret)
 {
     DIR             *fddir;
     struct dirent   *dir;
+    char            *fg = option(ac, av);
     int             i = 1;
     int             nb = 0;
 
     if (!(dir = malloc(sizeof(struct dirent) * (nb_file(ac, av, fold) + 1))))
         return (NULL);
     while (i < ac) {
-        if (!(fddir = opendir(av[i])) && !if_fg(av[i])) {
+        if (!if_fg(av[i]))
+            *ret = (none_file(av[i], 1) == 1 || *ret == 1) ? 1 : 0;
+        if ((!(fddir = opendir(av[i])) || fg[2] == 'd') && !if_fg(av[i]) &&
+!none_file(av[i], 0)) {
             my_strcpy(dir[nb].d_name, av[i]);
             nb++;
         }

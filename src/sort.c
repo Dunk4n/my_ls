@@ -49,23 +49,21 @@ void    dir_rev(struct dirent **dir)
     if (!dir || !(*dir))
         return ;
     while ((*dir)[nb++].d_name[0]);
-    nb -= 2;
+    nb--;
     while (i < nb / 2) {
         tmp = (*dir)[i];
-        (*dir)[i] = (*dir)[nb - i];
-        (*dir)[nb - i] = tmp;
+        (*dir)[i] = (*dir)[nb - i - 1];
+        (*dir)[nb - i - 1] = tmp;
         i++;
     }
 }
 
 void    sort_dir(struct dirent *dir, char *fg)
 {
-
     if (!fg || !dir || !dir[0].d_name[0] || !dir[1].d_name[0])
         return ;
+    buble_sort(dir, &dir_cmp);
     if (fg[4] != 't')
-        buble_sort(dir, &dir_cmp);
-    else
         buble_sort(dir, &dir_cmpt);
     if (fg[3] == 'r')
         dir_rev(&dir);

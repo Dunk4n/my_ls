@@ -17,6 +17,8 @@ SRC	=	$(D_SRC)main.c		\
 		$(D_SRC)cmp.c		\
 		$(D_SRC)display.c	\
 		$(D_SRC)display_file.c	\
+		$(D_SRC)none_file.c	\
+		$(D_SRC)sort_str.c	\
 		$(D_SRC)tab_dir.c
 
 OBJ	=	$(SRC:%.c=%.o)

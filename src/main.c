@@ -9,5 +9,5 @@
 
 int     main(int ac, char **av)
 {
-    my_ls(ac, av);
+    return (my_ls(ac, av));
 }

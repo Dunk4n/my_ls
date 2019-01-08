@@ -14,12 +14,14 @@
 void            display_dir(struct dirent *dir, char *path, char *fg);
 void            get_all_dir(char *fg, char *name, char *path, int nb);
 void            display_file(struct dirent *dir, char *fg, int fold);
+struct dirent   *tab_file(int ac, char **av, int *fold, int *ret);
 int             dir_cmpt(struct dirent *d1, struct dirent *d2);
 int             dir_cmp(struct dirent *d1, struct dirent *d2);
 void            sort_dir(struct dirent *dir, char *fg);
-struct dirent   *tab_file(int ac, char **av, int *fold);
 int             nb_folder_nofile(int ac, char **av);
 char            *get_path(char *name, char *path);
+void            sort_str(char **tab, char *fg);
+int             none_file(char *str, int nb);
 char            *option(int ac, char **av);
 int             my_ls(int ac, char **av);
 struct dirent   *tab_dir(char *str);
