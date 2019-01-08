@@ -87,11 +87,14 @@ int     my_ls(int ac, char **av)
     int             fold = 0;
     int             ret = 0;
 
-    if (nbf == 0)
+    if (nbf == 0 && fg[2] != 'd')
         get_all_dir(fg, ".", NULL, 1);
+    if (nbf == 0 && fg[2] == 'd')
+        my_putstr(".\n");
     dir = tab_file(ac, av, &fold, &ret);
     sort_dir(dir, fg, "");
     display_file(dir, fg, fold);
-    list_dir(ac, av, fold);
+    if (fg[2] != 'd')
+        list_dir(ac, av, fold);
     return ((ret != 0) ? 84 : 0);
 }

@@ -30,6 +30,8 @@ void    display_file(struct dirent *dir, char *fg, int fold)
 {
     int i = 0;
 
+    if (fg[2] == 'd')
+        fold = 0;
     while (dir[i].d_name[0]) {
         (fg[0] == 'l') ? flag_l(dir[i].d_name) : 0;
         my_printf("%s\n", dir[i].d_name);
