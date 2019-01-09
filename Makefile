@@ -25,15 +25,13 @@ OBJ	=	$(SRC:%.c=%.o)
 
 NAME	=	my_ls
 
-CFLAGS	=	-W -Wall -Wextra -I$(D_INC) -g
+CFLAGS	=	-W -Wall -Wextra -I$(D_INC)
 
 LDFLAGS	=	-L$(D_LIB) -lmy
 
 TEST_LDFLAGS =	$(LDFLAGS) -lcriterion
 
 TEST_CFLAGS =	$(CFLAGS) --coverage
-
-TESTS_SRC	=	$(D_SRCT)test_map.c		\
 
 all: $(NAME)
 
@@ -60,12 +58,5 @@ $(NAME): $(OBJ)
 re:
 	$(MAKE) fclean
 	$(MAKE) all
-
-tests: $(OBJ) clean
-	$(MAKE) -C lib/my
-	gcc -o unit_test $(TESTS_SRC) $(TEST_LDFLAGS) $(TEST_CFLAGS)
-
-coverage:
-	gcovr --exclude tests/
 
 .PHONY: all clean fclean re
