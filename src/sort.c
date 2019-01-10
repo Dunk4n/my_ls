@@ -62,7 +62,8 @@ void    sort_dir(struct dirent *dir, char *fg, char *path)
 {
     if (!fg || !dir || !dir[0].d_name[0] || !dir[1].d_name[0])
         return ;
-    buble_sort(dir, &dir_cmp, path);
+    if (fg[4] != 't')
+        buble_sort(dir, &dir_cmp, path);
     if (fg[4] == 't') {
         dir_rev(&dir);
         buble_sort(dir, &dir_cmpt, path);
