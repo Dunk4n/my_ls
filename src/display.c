@@ -22,7 +22,7 @@ void    pars_time(char *str)
 
     if (!tab)
         return ;
-    //tab[3][5] = '\0';
+    tab[3][5] = '\0';
     my_printf("%s %s %s ", tab[1], tab[2], tab[3]);
     while (tab[i])
         free(tab[i++]);
@@ -35,23 +35,13 @@ void    flag_l(char *path)
 
     if (!path || stat(path, &filestat) < 0)
         return ;
-    if (S_ISBLK(filestat.st_mode))
-        my_putstr("b");
-    else if (S_ISCHR(filestat.st_mode))
-        my_putstr("c");
-    else if (S_ISDIR(filestat.st_mode))
-        my_putstr("d");
+    permission(filestat);
+    if (filestat.st_mode & S_IXOTH)
+        my_putstr("x");
+    else if (filestat.st_mode & S_ISVTX)
+        my_putstr("T");
     else
         my_putstr("-");
-    my_putstr((filestat.st_mode & S_IRUSR) ? "r" : "-");
-    my_putstr((filestat.st_mode & S_IWUSR) ? "w" : "-");
-    my_putstr((filestat.st_mode & S_IXUSR) ? "x" : "-");
-    my_putstr((filestat.st_mode & S_IRGRP) ? "r" : "-");
-    my_putstr((filestat.st_mode & S_IWGRP) ? "w" : "-");
-    my_putstr((filestat.st_mode & S_IXGRP) ? "x" : "-");
-    my_putstr((filestat.st_mode & S_IROTH) ? "r" : "-");
-    my_putstr((filestat.st_mode & S_IWOTH) ? "w" : "-");
-    my_putstr((filestat.st_mode & S_IXOTH) ? "x" : "-");
     my_printf(" %d %s %s %d  ", filestat.st_nlink,
 (getpwuid(filestat.st_uid))->pw_name, (getgrgid(filestat.st_gid))->gr_name,
 filestat.st_size);

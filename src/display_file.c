@@ -63,3 +63,23 @@ dir[i].d_type == 4) {
     }
     free(newpath);
 }
+
+void    permission(struct stat filestat)
+{
+    if (S_ISBLK(filestat.st_mode))
+        my_putstr("b");
+    else if (S_ISCHR(filestat.st_mode))
+        my_putstr("c");
+    else if (S_ISDIR(filestat.st_mode))
+        my_putstr("d");
+    else
+        my_putstr("-");
+    my_putstr((filestat.st_mode & S_IRUSR) ? "r" : "-");
+    my_putstr((filestat.st_mode & S_IWUSR) ? "w" : "-");
+    my_putstr((filestat.st_mode & S_IXUSR) ? "x" : "-");
+    my_putstr((filestat.st_mode & S_IRGRP) ? "r" : "-");
+    my_putstr((filestat.st_mode & S_IWGRP) ? "w" : "-");
+    my_putstr((filestat.st_mode & S_IXGRP) ? "x" : "-");
+    my_putstr((filestat.st_mode & S_IROTH) ? "r" : "-");
+    my_putstr((filestat.st_mode & S_IWOTH) ? "w" : "-");
+}
