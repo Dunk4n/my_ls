@@ -22,7 +22,7 @@ void    pars_time(char *str)
 
     if (!tab)
         return ;
-    tab[3][5] = '\0';
+    //tab[3][5] = '\0';
     my_printf("%s %s %s ", tab[1], tab[2], tab[3]);
     while (tab[i])
         free(tab[i++]);

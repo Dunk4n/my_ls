@@ -13,6 +13,7 @@
 
 int     dir_cmpt(struct dirent *d1, struct dirent *d2, char *path)
 {
+    int         i = 0;
     struct stat attrib1;
     struct stat attrib2;
     char   *newpath1 = get_path(d1->d_name, path);
@@ -21,12 +22,14 @@ int     dir_cmpt(struct dirent *d1, struct dirent *d2, char *path)
     stat(newpath1, &attrib1);
     stat(newpath2, &attrib2);
     if (attrib1.st_ctime - attrib2.st_ctime < 0)
-        return (1);
+        i = 1;
+    if (attrib2.st_ctime - attrib1.st_ctime < 0)
+        i = -1;
     if (attrib1.st_ctime - attrib2.st_ctime == 0)
-        return (0);
+        i = 0;
     free(newpath1);
     free(newpath2);
-    return (-1);
+    return (i);
 }
 
 int     my_strcmp_c(char const *s1, char const *s2)
