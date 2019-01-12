@@ -47,16 +47,17 @@ void    get_all_dir(char *fg, char *name, char *path, int nb)
     char            *newpath;
     int             i = 0;
 
-    if (!fg || !name || !(newpath = get_path(name, path)) ||
-!(dir = tab_dir(newpath)))
+    if (!fg || !name || !(newpath = get_path(name, path)))
         return ;
+    if (error_de(newpath) || !(dir = tab_dir(newpath)))
+        return ;
+    (path) ?  my_putchar('\n') : 0;
     (nb > 1 || fg[1] == 'R') ? my_printf("%s:\n", newpath) : 0;
     sort_dir(dir, fg, newpath);
     display_dir(dir, newpath, fg);
     while (fg[1] == 'R' && dir[i].d_name[0]) {
         if ((dir[i].d_name[0] != '.' || dir[i].d_name[1] == '/') &&
 dir[i].d_type == 4) {
-            my_putchar('\n');
             get_all_dir(fg, dir[i].d_name, newpath, nb);
         }
         i++;

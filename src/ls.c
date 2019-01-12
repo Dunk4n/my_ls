@@ -31,7 +31,7 @@ int     nb_tab_dir(int ac, char **av)
     int     nb = 0;
 
     while (i < ac) {
-        if (!if_fg(av[i++]) && !none_file(av[i], 0))
+        if (!if_fg(av[i++]) && !none_file(av[i]))
             nb++;
         (fddir) ? closedir(fddir) : 0;
     }
@@ -44,14 +44,16 @@ char    **tab_name(int ac, char **av)
     char    **dirn;
     int     i = 1;
     int     nb = 0;
+    struct  stat filestat;
 
     if (!(dirn = malloc(sizeof(char*) * (nb_tab_dir(ac, av) + 1))))
         return (NULL);
     while (i < ac) {
-        if (!if_fg(av[i]) && !none_file(av[i], 0) && (fddir = opendir(av[i]))) {
+        if ((!if_fg(av[i]) && !none_file(av[i]) && (fddir = opendir(av[i]))) ||
+(!stat(av[i], &filestat) && !(filestat.st_mode & S_IROTH))) {
             dirn[nb] = malloc(sizeof(char) * (my_strlen(av[i]) + 1));
             dirn[nb] = my_strcpy(dirn[nb], av[i]);
-            closedir(fddir);
+            (!fddir) ? closedir(fddir) : 0;
             nb++;
         }
         i++;
@@ -87,8 +89,10 @@ int     my_ls(int ac, char **av)
     int             fold = 0;
     int             ret = 0;
 
-    if (nbf == 0 && fg[2] != 'd')
+    if (nbf == 0 && fg[2] != 'd') {
         get_all_dir(fg, ".", NULL, 1);
+        return (0);
+    }
     if (nbf == 0 && fg[2] == 'd')
         my_putstr(".\n");
     dir = tab_file(ac, av, &fold, &ret);

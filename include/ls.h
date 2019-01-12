@@ -28,6 +28,7 @@ void            file_no(int ac, char **av);
 int             my_ls(int ac, char **av);
 int             none_file(char *str);
 struct dirent   *tab_dir(char *str);
+int             error_de(char *str);
 void            flag_l(char *path);
 int             if_fg(char *str);
 
