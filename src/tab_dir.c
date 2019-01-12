@@ -24,9 +24,7 @@ int             if_fg(char *str)
         j = 0;
         bol = 1;
         while (tab[j] && bol) {
-            if (tab[j] == str[i]) {
-                bol = 0;
-            }
+            (tab[j] == str[i]) ? bol = 0 : 0;
             j++;
         }
         i++;

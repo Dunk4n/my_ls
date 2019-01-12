@@ -70,7 +70,7 @@ void    cond_tab(char *av, char *fg, struct dirent **dir, int *nb)
     DIR             *fddir;
 
     if ((!(fddir = opendir(av)) || fg[2] == 'd') && !if_fg(av) &&
-            !none_file(av)) {
+!none_file(av)) {
         my_strcpy((*dir)[*nb].d_name, av);
         (*nb)++;
     }
