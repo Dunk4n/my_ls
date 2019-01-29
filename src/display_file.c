@@ -69,11 +69,12 @@ void    permission(struct stat filestat)
 {
     if (S_ISBLK(filestat.st_mode))
         my_putstr("b");
-    else if (S_ISCHR(filestat.st_mode))
+    if (S_ISCHR(filestat.st_mode))
         my_putstr("c");
-    else if (S_ISDIR(filestat.st_mode))
+    if (S_ISDIR(filestat.st_mode))
         my_putstr("d");
-    else
+    if (!S_ISBLK(filestat.st_mode) && !S_ISCHR(filestat.st_mode) &&
+!S_ISDIR(filestat.st_mode))
         my_putstr("-");
     my_putstr((filestat.st_mode & S_IRUSR) ? "r" : "-");
     my_putstr((filestat.st_mode & S_IWUSR) ? "w" : "-");

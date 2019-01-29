@@ -16,7 +16,7 @@ void    file_de(int ac, char **av)
 
     while (i < ac) {
         if (!stat(av[i], &filestat) && !(filestat.st_mode & S_IROTH)) {
-            write(2, "ls: cannot access \'", 19);
+            write(2, "ls: cannot open directory \'", 27);
             write(2, av[i], my_strlen(av[i]));
             write(2, "\': Permission denied\n", 21);
         }
@@ -29,7 +29,7 @@ int     error_de(char *str)
     struct stat filestat;
 
     if (!stat(str, &filestat) && !(filestat.st_mode & S_IROTH)) {
-        write(2, "ls: cannot access \'", 19);
+        write(2, "ls: cannot open directory \'", 27);
         write(2, str, my_strlen(str));
         write(2, "\': Permission denied\n", 21);
         return (1);
@@ -44,7 +44,7 @@ void    file_no(int ac, char **av)
 
     while (i < ac) {
         if (stat(av[i], &filestat) != 0 && !if_fg(av[i])) {
-            write(2, "ls: cannot open directory \'", 27);
+            write(2, "ls: cannot access \'", 19);
             write(2, av[i], my_strlen(av[i]));
             write(2, "\': No such file or directory\n", 29);
         }

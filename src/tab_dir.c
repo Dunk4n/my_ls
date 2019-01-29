@@ -76,8 +76,11 @@ int             nb_file(int ac, char **av, int *fold)
     DIR             *fddir;
     int             i = 1;
     int             nb = 0;
+    struct stat     filestat;
 
     while (i < ac) {
+        if (!stat(av[i], &filestat) && !(filestat.st_mode & S_IROTH))
+            (*fold)++;
         if (!(fddir = opendir(av[i])) || !if_fg(av[i]))
             nb++;
         if (fddir) {
